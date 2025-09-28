@@ -2,31 +2,14 @@
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
-
+use App\Models\Posts;
 
 Route::get('/', function () {
     return view('home', ['title' => 'Home Page']);
 });
 
 Route::get('/posts', function () {
-    return view('posts', ['title' => 'Posts Page', 'posts' => [
-        [
-            'id' => 1,
-            'title' => 'Judul Artikel Pertama',
-            'slug' => 'judul-artikel-1',
-            'date' => '1 Januari 2024',
-            'author' => 'Admin',
-            'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.'
-        ],
-        [
-            'id' => 2,
-            'title' => 'Judul Artikel Kedua',
-            'slug' => 'judul-artikel-2',
-            'date' => '2 Januari 2024',
-            'author' => 'Admin',
-            'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.'
-        ],
-    ]]);
+    return view('posts', ['title' => 'Blog Page', 'posts' => Posts::all()]);
 });
 
 Route::get('/about', function () {
@@ -34,28 +17,8 @@ Route::get('/about', function () {
 });
 
 Route::get('/posts/{slug}', function ($slug) {
-    $posts = [
-        [
-            'id' => 1,
-            'title' => 'Judul Artikel Pertama',
-            'slug' => 'judul-artikel-1',
-            'date' => '1 Januari 2024',
-            'author' => 'Admin',
-            'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.'
-        ],
-        [
-            'id' => 2,
-            'title' => 'Judul Artikel Kedua',
-            'slug' => 'judul-artikel-2',
-            'date' => '2 Januari 2024',
-            'author' => 'Admin',
-            'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.'
-        ],
-    ];
 
-    $post = Arr::first($posts, function ($posts) use ($slug) {
-        return $posts['slug'] == $slug;
-    });
+    $post = Posts::find($slug);
 
     return view('post', [
         'title' => 'Single Post Page',
