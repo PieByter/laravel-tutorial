@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 
 
@@ -7,12 +8,12 @@ Route::get('/', function () {
     return view('home', ['title' => 'Home Page']);
 });
 
-Route::get('/blog', function () {
-    return view('posts', ['title' => 'Blog Page', 'posts' => [
+Route::get('/posts', function () {
+    return view('posts', ['title' => 'Posts Page', 'posts' => [
         [
             'id' => 1,
             'title' => 'Judul Artikel Pertama',
-            'slug' => 'judul-artikel-pertama',
+            'slug' => 'judul-artikel-1',
             'date' => '1 Januari 2024',
             'author' => 'Admin',
             'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.'
@@ -20,7 +21,7 @@ Route::get('/blog', function () {
         [
             'id' => 2,
             'title' => 'Judul Artikel Kedua',
-            'slug' => 'judul-artikel-kedua',
+            'slug' => 'judul-artikel-2',
             'date' => '2 Januari 2024',
             'author' => 'Admin',
             'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.'
@@ -32,29 +33,33 @@ Route::get('/about', function () {
     return view('about', ['title' => 'About Page']);
 });
 
-Route::get('/posts/{id}', function ($id) {
+Route::get('/posts/{slug}', function ($slug) {
     $posts = [
-        1 => [
+        [
+            'id' => 1,
             'title' => 'Judul Artikel Pertama',
+            'slug' => 'judul-artikel-1',
             'date' => '1 Januari 2024',
             'author' => 'Admin',
-            'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.'
+            'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.'
         ],
-        2 => [
+        [
+            'id' => 2,
             'title' => 'Judul Artikel Kedua',
+            'slug' => 'judul-artikel-2',
             'date' => '2 Januari 2024',
             'author' => 'Admin',
-            'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.'
+            'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.'
         ],
     ];
 
-    if (!array_key_exists($id, $posts)) {
-        abort(404);
-    }
+    $post = Arr::first($posts, function ($posts) use ($slug) {
+        return $posts['slug'] == $slug;
+    });
 
     return view('post', [
-        'title' => $posts[$id]['title'],
-        'post' => $posts[$id]
+        'title' => 'Single Post Page',
+        'post' => $post
     ]);
 });
 
