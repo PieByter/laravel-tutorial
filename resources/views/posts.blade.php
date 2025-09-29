@@ -59,7 +59,9 @@
         </a>
         </article> --}}
 
-    <div class="py-4 px-4 mx-auto max-w-screen-xl lg:py-8 lg:px-0">
+
+    {{ $posts->links() }}
+    <div class="my-4 py-4 px-4 mx-auto max-w-screen-xl lg:py-8 lg:px-0">
         <div class="grid gap-8 lg:grid-cols-3 md:grid-cols-2">
             @forelse ($posts as $post)
                 <article
@@ -111,6 +113,8 @@
             @endforelse
         </div>
     </div>
+
+    {{ $posts->links() }}
     {{-- <article class="py-8 max-w-screen-md border-b border-gray-300">
         <h2 class="mb-1 text-3xl tracking-tight font-bold text-gray-900">Judul Artikel 1</h2>
         <div class="text-base text-gray-500">
