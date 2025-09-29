@@ -11,7 +11,10 @@ Route::get('/', function () {
 });
 
 Route::get('/posts', function () {
-    return view('posts', ['title' => 'Blog Page', 'posts' => Post::all()]);
+    // $posts = Post::with(['category', 'author'])->latest()->get();
+    // return view('posts', ['title' => 'Blog Page', 'posts' => $posts]);
+    $posts = Post::latest()->get();
+    return view('posts', ['title' => 'Blog Page', 'posts' => $posts]);
 });
 
 Route::get('/about', function () {
@@ -28,15 +31,9 @@ Route::get('/posts/{post:slug}', function (Post $post) {
     ]);
 });
 
-Route::get('/categories/{category:slug}', function (Category $category) {
-
-    return view('posts', [
-        'title' => 'Post By Category : ' . $category->name,
-        'posts' => $category->posts
-    ]);
-});
-
 Route::get('/authors/{user:username}', function (User $user) {
+
+    // $posts = $user->posts->load(['category', 'author']);
 
     return view('posts', [
         'title' => $user->posts->count()  . ' Article By ' . $user->name,
@@ -44,8 +41,18 @@ Route::get('/authors/{user:username}', function (User $user) {
     ]);
 });
 
+Route::get('/categories/{category:slug}', function (Category $category) {
+
+    // $posts = $category->posts->load(['category', 'author']);
+
+    return view('posts', [
+        'title' => 'Post By Category : ' . $category->name,
+        'posts' => $category->posts
+    ]);
+});
 
 Route::get('/contact', function () {
+
     return view('contact', [
         'title' => 'Contact Page',
         'email' => 'contact@' . strtolower(str_replace(' ', '', config('app.name'))) . '.com'
