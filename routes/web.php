@@ -13,8 +13,8 @@ Route::get('/', function () {
 Route::get('/posts', function () {
     // $posts = Post::with(['category', 'author'])->latest()->get();
     // return view('posts', ['title' => 'Blog Page', 'posts' => $posts]);
-    $posts = Post::latest()->get();
-    return view('posts', ['title' => 'Blog Page', 'posts' => $posts]);
+
+    return view('posts', ['title' => 'Blog Page', 'posts' => Post::filter(request(['search', 'category', 'author']))->latest()->get()]);
 });
 
 Route::get('/about', function () {
